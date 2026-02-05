@@ -59,7 +59,7 @@ const PopupModal = () => {
                             {/* Use standard img tag to respect natural aspect ratio of unknown image dimensions */}
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
-                                src="/images/anniversary.jpg"
+                                src="/images/PopupBanner.jpeg"
                                 alt="Anniversary Celebration"
                                 className="max-w-full max-h-[80vh] w-auto h-auto object-contain"
                             />

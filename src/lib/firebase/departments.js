@@ -10,6 +10,14 @@ export async function getDepartments() {
       id: doc.id,
       ...doc.data()
     }));
+
+    // Sort logic: ascending order by ordernumber
+    departments.sort((a, b) => {
+      const orderA = typeof a.ordernumber === 'number' ? a.ordernumber : 9999;
+      const orderB = typeof b.ordernumber === 'number' ? b.ordernumber : 9999;
+      return orderA - orderB;
+    });
+
     return { success: true, data: departments };
   } catch (error) {
     return { success: false, error: error.message };

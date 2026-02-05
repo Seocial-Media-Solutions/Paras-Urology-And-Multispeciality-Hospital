@@ -15,6 +15,7 @@ export default function DepartmentManagementPanel() {
 
   const [formData, setFormData] = useState({
     title: '',
+    ordernumber: '',
     description: '',
     imageUrl: ''
   });
@@ -70,6 +71,7 @@ export default function DepartmentManagementPanel() {
   const resetForm = () => {
     setFormData({
       title: '',
+      ordernumber: '',
       description: '',
       imageUrl: ''
     });
@@ -121,6 +123,7 @@ export default function DepartmentManagementPanel() {
 
       const departmentData = {
         title: formData.title.trim(),
+        ordernumber: Number(formData.ordernumber) || 0,
         description: formData.description.trim(),
         imageUrl
       };
@@ -154,12 +157,13 @@ export default function DepartmentManagementPanel() {
     setEditingDepartment(department);
     setFormData({
       title: department.title || '',
+      ordernumber: department.ordernumber || '',
       description: department.description || '',
       imageUrl: department.imageUrl || ''
     });
     setImagePreview(department.imageUrl || '');
     setShowForm(true);
-    
+
     setTimeout(() => {
       if (formRef.current) {
         formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -262,6 +266,21 @@ export default function DepartmentManagementPanel() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Sort Order
+                </label>
+                <input
+                  type="number"
+                  name="ordernumber"
+                  value={formData.ordernumber}
+                  onChange={handleInputChange}
+                  disabled={uploading}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 transition-all"
+                  placeholder="e.g., 1, 2, 3"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Description *
                 </label>
                 <textarea
@@ -344,7 +363,9 @@ export default function DepartmentManagementPanel() {
                 </button>
               </div>
             </div>
+
           </div>
+
         )}
 
         <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
@@ -406,6 +427,6 @@ export default function DepartmentManagementPanel() {
           )}
         </div>
       </div>
-    </div>
+    </div >
   );
 }
