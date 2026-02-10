@@ -7,20 +7,47 @@ const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID ,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
+// Check if all required Firebase config values are present
+const isFirebaseConfigValid = () => {
+  return (
+    firebaseConfig.apiKey &&
+    firebaseConfig.authDomain &&
+    firebaseConfig.projectId &&
+    firebaseConfig.storageBucket &&
+    firebaseConfig.messagingSenderId &&
+    firebaseConfig.appId
+  );
+};
+
+// Initialize Firebase only if config is valid
 let app;
-if (!getApps().length) {
-  app = initializeApp(firebaseConfig);
+let auth;
+let db;
+let storage;
+
+if (isFirebaseConfigValid()) {
+  if (!getApps().length) {
+    app = initializeApp(firebaseConfig);
+  } else {
+    app = getApps()[0];
+  }
+
+  auth = getAuth(app);
+  db = getFirestore(app);
+  storage = getStorage(app);
 } else {
-  app = getApps()[0];
+  console.warn('Firebase configuration is incomplete. Firebase services will not be initialized.');
+  // Create mock objects for build time
+  app = null;
+  auth = null;
+  db = null;
+  storage = null;
 }
 
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
+export { auth, db, storage };
 export default app;
