@@ -66,6 +66,7 @@ export default function Footer() {
                   src="/images/logo.jpg"
                   alt="Paras Hospital Logo"
                   fill
+                  sizes="(max-width: 768px) 100vw, 240px"
                   className="object-contain"
                 />
               </div>
@@ -111,7 +112,7 @@ export default function Footer() {
                 <Phone className="w-5 h-5 mt-0.5 text-yellow-400" />
                 <span className="text-sm">+91-95218-94263</span>
               </a>
-             <a
+              <a
                 href="tel:0145-2941941"
                 className="flex items-start gap-3 text-blue-100 hover:text-yellow-400 transition-colors duration-300"
               >
@@ -166,7 +167,7 @@ export default function Footer() {
         </div>
       </div>
 
-     
+
       {/* Copyright */}
       <div className="bg-blue-950 border-t border-blue-800/60 text-center py-4">
         <p className="text-sm text-blue-200">

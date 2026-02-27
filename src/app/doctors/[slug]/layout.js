@@ -1,28 +1,33 @@
 import { getDoctorBySlug } from "@/lib/firebase/doctors";
 
 export async function generateMetadata({ params }) {
-    const { slug } = params;
-    const result = await getDoctorBySlug(slug);
+    const { slug } = await params;
 
-    if (result.success && result.data) {
-        const doctor = result.data;
-        const title = `${doctor.name} | Expert ${doctor.expertise} at Paras Urology & Multispeciality Hospital`;
-        const description = `${doctor.name} (${doctor.education}) is a highly experienced ${doctor.expertise} at Paras Urology & Multispeciality Hospital Ajmer. ${doctor.about?.substring(0, 150)}...`;
+    const doctorSeoData = require("../../../../public/doctor.json");
+    const metadata = doctorSeoData.find((doctor) => doctor.slug == slug);
+
+    const result = await getDoctorBySlug(slug);
+    const doctor = (result.success && result.data) ? result.data : metadata;
+
+    if (doctor) {
+        const title = metadata?.title || doctor?.title || doctor?.name || "Doctor Profile";
+        const description = metadata?.description || doctor?.about?.substring(0, 150) || doctor?.description || "Doctor Profile at Paras Urology & Multispeciality Hospital";
+        const keywords = metadata?.keywords || doctor?.expertise || "";
 
         return {
             title,
             description,
-            keywords: `${doctor.name}, ${doctor.expertise} Ajmer, ${doctor.education}, best doctor Ajmer, Paras Hospital doctor`,
+            keywords,
             openGraph: {
                 title,
                 description,
-                images: doctor.imageUrl
+                images: doctor?.imageUrl
                     ? [
                         {
                             url: doctor.imageUrl,
                             width: 800,
                             height: 600,
-                            alt: doctor.name,
+                            alt: doctor.name || title,
                         },
                     ]
                     : [],
@@ -37,7 +42,7 @@ export async function generateMetadata({ params }) {
                 card: "summary_large_image",
                 title,
                 description,
-                images: doctor.imageUrl ? [doctor.imageUrl] : [],
+                images: doctor?.imageUrl ? [doctor.imageUrl] : [],
             },
             robots: {
                 index: true,
@@ -45,18 +50,14 @@ export async function generateMetadata({ params }) {
             },
             other: {
                 "application-name": "Paras Urology & Multispeciality Hospital",
-                author: doctor.name,
+                author: doctor?.name || title,
                 generator: "Next.js",
                 "theme-color": "#ffffff",
             },
         };
     }
 
-    return {
-        title: "Doctor Profile | Paras Urology & Multispeciality Hospital",
-        description:
-            "View the profile of our expert medical professional at Paras Urology & Multispeciality Hospital Ajmer.",
-    };
+    return {};
 }
 
 export default function DoctorProfileLayout({ children }) {

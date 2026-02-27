@@ -15,7 +15,6 @@ import {
 } from 'lucide-react';
 import { getDoctorBySlug } from '@/lib/firebase/doctors';
 import Link from 'next/link';
-
 export default function SingleDoctorPage() {
   const params = useParams();
   const [doctor, setDoctor] = useState(null);
@@ -158,23 +157,23 @@ export default function SingleDoctorPage() {
 
                 <div className="space-y-3">
                   <Link href={"/book-appointment"}>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    className="w-full bg-white text-blue-600 py-3 rounded-lg font-semibold hover:bg-green-50 transition-colors flex items-center justify-center gap-2 mb-4"
-                  >
-                    <Calendar className="w-5 h-5" />
-                    Book Appointment
-                  </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      className="w-full bg-white text-blue-600 py-3 rounded-lg font-semibold hover:bg-green-50 transition-colors flex items-center justify-center gap-2 mb-4"
+                    >
+                      <Calendar className="w-5 h-5" />
+                      Book Appointment
+                    </motion.button>
                   </Link>
 
                   <Link href={"tel:+919521894263"}>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    className="w-full bg-blue-700 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center justify-center gap-2"
-                  >
-                    <Phone className="w-5 h-5" />
-                    Call Now
-                  </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      className="w-full bg-blue-700 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center justify-center gap-2"
+                    >
+                      <Phone className="w-5 h-5" />
+                      Call Now
+                    </motion.button>
                   </Link>
                 </div>
               </div>
@@ -201,7 +200,7 @@ export default function SingleDoctorPage() {
                       </p>
                       <p className="font-semibold text-gray-800">{doctor.education}</p>
                     </div>
-                 
+
                     <div className="bg-white rounded-lg p-4">
                       <p className="text-sm text-gray-600 mb-1 flex items-center gap-2">
                         <Award className="w-4 h-4 text-blue-600" />
@@ -302,22 +301,22 @@ export default function SingleDoctorPage() {
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Link href={"/book-appointment"}>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    className="bg-white text-blue-600 py-3 px-6 rounded-lg font-semibold hover:bg-blue-50 transition-colors flex items-center justify-center gap-2"
-                  >
-                    <Calendar className="w-5 h-5" />
-                    Book Appointment
-                  </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      className="bg-white text-blue-600 py-3 px-6 rounded-lg font-semibold hover:bg-blue-50 transition-colors flex items-center justify-center gap-2"
+                    >
+                      <Calendar className="w-5 h-5" />
+                      Book Appointment
+                    </motion.button>
                   </Link>
-                   <Link href={"tel:+919521894263"}>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    className="bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center justify-center gap-2"
-                  >
-                    <Phone className="w-5 h-5" />
-                    Contact Hospital
-                  </motion.button>
+                  <Link href={"tel:+919521894263"}>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      className="bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center justify-center gap-2"
+                    >
+                      <Phone className="w-5 h-5" />
+                      Contact Hospital
+                    </motion.button>
                   </Link>
                 </div>
               </motion.div>

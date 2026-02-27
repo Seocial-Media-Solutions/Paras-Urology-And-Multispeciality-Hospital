@@ -72,7 +72,7 @@ const Navigation = () => {
             >
               <Mail size={14} className="lg:w-4 lg:h-4" />
               <span className="hidden xl:inline">
-               parasurologyhospital@gmail.com
+                parasurologyhospital@gmail.com
               </span>
               <span className="xl:hidden">Email</span>
             </a>
@@ -109,9 +109,8 @@ const Navigation = () => {
 
       {/* Main Navigation */}
       <div
-        className={`bg-white transition-shadow duration-300 ${
-          scrolled ? "shadow-lg" : "shadow-md"
-        }`}
+        className={`bg-white transition-shadow duration-300 ${scrolled ? "shadow-lg" : "shadow-md"
+          }`}
       >
         <div className="max-w-8xl mx-auto px-4">
           <div className="flex justify-between items-center py-2.5 md:py-3">
@@ -150,7 +149,7 @@ const Navigation = () => {
               >
                 Departments
               </Link>
-              
+
               <Link
                 href="/our-empanelment"
                 className="text-gray-700 hover:text-blue-700 font-medium transition-colors text-sm xl:text-base"
@@ -167,15 +166,13 @@ const Navigation = () => {
 
               <Link
                 href="/book-appointment"
-                className="relative overflow-hidden bg-[#002b4a] text-white px-4 xl:px-6 py-2 rounded-lg font-medium text-sm xl:text-base whitespace-nowrap 
-  transition-all duration-300 hover:shadow-lg"
+                className="relative overflow-hidden bg-[#002b4a] text-white px-4 xl:px-6 py-2 rounded-lg font-medium text-sm xl:text-base whitespace-nowrap transition-all duration-300 hover:shadow-lg"
               >
                 <span className="relative z-10">Book Appointment</span>
 
                 {/* Infinite shining effect */}
                 <span
-                  className="absolute inset-0 h-30  bg-gradient-to-r from-transparent rotate-0 via-white/40 to-transparent 
-    animate-[shine_0.9s_linear_infinite]"
+                  className="absolute inset-0 h-30 bg-gradient-to-r from-transparent rotate-0 via-white/40 to-transparent animate-[shine_0.9s_linear_infinite]"
                 ></span>
               </Link>
             </div>
@@ -208,9 +205,8 @@ const Navigation = () => {
 
           {/* Mobile Menu Drawer */}
           <div
-            className={`fixed top-0 right-0 h-full w-[280px] sm:w-[320px] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${
-              isMenuOpen ? "translate-x-0" : "translate-x-full"
-            }`}
+            className={`fixed top-0 right-0 h-full w-[280px] sm:w-[320px] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${isMenuOpen ? "translate-x-0" : "translate-x-full"
+              }`}
           >
             <div className="flex flex-col h-full">
               {/* Mobile Menu Header */}
@@ -256,7 +252,7 @@ const Navigation = () => {
                   >
                     Departments
                   </Link>
-                  
+
                   <Link
                     href="/our-empanelment"
                     className="text-gray-700 hover:text-blue-700 hover:bg-blue-50 font-medium py-3 px-4 rounded-lg transition-all"
