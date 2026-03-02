@@ -2,14 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { 
-  LayoutDashboard, 
-  Image, 
-  Users, 
+import {
+  LayoutDashboard,
+  Image,
+  Users,
   LogOut,
   Hospital,
   Menu,
-  X
+  X,
+  Megaphone
 } from 'lucide-react';
 import { logoutUser } from '@/lib/firebase/auth';
 import toast from 'react-hot-toast';
@@ -27,11 +28,16 @@ const menuItems = [
     path: '/admin/hero-section'
   },
   {
+    title: 'Popup Banner',
+    icon: Megaphone,
+    path: '/admin/popup-banner'
+  },
+  {
     title: 'Doctors',
     icon: Users,
     path: '/admin/doctors'
   },
-   {
+  {
     title: 'Our Empanelments',
     icon: Users,
     path: '/admin/our-empanelments'
@@ -54,11 +60,13 @@ export default function AdminSidebar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
-    const result = await logoutUser();
-    if (result.success) {
+    try {
+      // Clear server-side JWT session cookie
+      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
       toast.success('Logged out successfully');
       router.push('/admin/login');
-    } else {
+    } catch (error) {
+      console.error('Logout error:', error);
       toast.error('Logout failed');
     }
   };
@@ -79,17 +87,16 @@ export default function AdminSidebar() {
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.path;
-          
+
           return (
             <Link
               key={item.path}
               href={item.path}
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                isActive
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }`}
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${isActive
+                ? 'bg-blue-600 text-white'
+                : 'text-gray-700 hover:bg-gray-100'
+                }`}
             >
               <Icon className="w-5 h-5" />
               <span className="font-medium">{item.title}</span>
@@ -134,9 +141,8 @@ export default function AdminSidebar() {
 
       {/* Mobile Sidebar */}
       <aside
-        className={`lg:hidden fixed top-0 left-0 h-full w-64 bg-white shadow-xl z-40 transform transition-transform duration-300 ${
-          isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`lg:hidden fixed top-0 left-0 h-full w-64 bg-white shadow-xl z-40 transform transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         <div className="flex flex-col h-full p-6">
           <SidebarContent />

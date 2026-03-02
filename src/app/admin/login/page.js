@@ -2,8 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { loginUser } from '@/lib/firebase/auth';
-import { Hospital, Lock, Mail } from 'lucide-react';
+import { Hospital, Lock, Mail, Shield } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
 export default function AdminLogin() {
@@ -16,24 +15,36 @@ export default function AdminLogin() {
     e.preventDefault();
     setLoading(true);
 
-    const result = await loginUser(email, password);
-    
-    if (result.success) {
-      toast.success('Login successful!');
-      setTimeout(() => {
-        router.push('/admin/dashboard');
-      }, 1000);
-    } else {
-      toast.error(result.error || 'Login failed. Please try again.');
+    try {
+      // Send credentials directly to our custom API
+      const sessionResponse = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const sessionData = await sessionResponse.json();
+
+      if (sessionResponse.ok && sessionData.success) {
+        toast.success('Login successful! Secure session started.');
+        setTimeout(() => {
+          router.push('/admin/dashboard');
+        }, 500);
+      } else {
+        toast.error(sessionData.error || 'Invalid email or password.');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      toast.error('An unexpected error occurred. Please try again.');
+    } finally {
+      setLoading(false);
     }
-    
-    setLoading(false);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
       <Toaster position="top-right" />
-      
+
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
         <div className="flex flex-col items-center mb-8">
           <div className="bg-blue-600 p-4 rounded-full mb-4">
@@ -81,16 +92,17 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
-            Protected admin area. Authorized access only.
-          </p>
+          <div className="flex items-center justify-center gap-1.5 text-sm text-gray-600">
+            <Shield className="w-4 h-4 text-green-600" />
+            <span>Secured with custom JWT session cookies</span>
+          </div>
         </div>
       </div>
     </div>

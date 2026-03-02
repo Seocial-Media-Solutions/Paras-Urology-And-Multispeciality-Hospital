@@ -2,28 +2,47 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
+import { getActivePopupBanner } from "@/lib/firebase/popup";
 
 const PopupModal = () => {
     const [isVisible, setIsVisible] = useState(false);
+    const [imageUrl, setImageUrl] = useState(null);
+    const [autoCloseSeconds, setAutoCloseSeconds] = useState(15);
 
     useEffect(() => {
-        // Check if the popup has already been shown in this session
-        const hasSeenPopup = sessionStorage.getItem("hasSeenAnniversaryPopup");
+        const hasSeenPopup = sessionStorage.getItem("hasSeenPopup");
 
         if (!hasSeenPopup) {
-            setIsVisible(true);
-            // Mark as seen immediately so it doesn't show again on refresh
-            sessionStorage.setItem("hasSeenAnniversaryPopup", "true");
+            const fetchPopupData = async () => {
+                try {
+                    const result = await getActivePopupBanner();
 
-            // Auto-close after 15 seconds
+                    if (result.success && result.data?.imageUrl) {
+                        setImageUrl(result.data.imageUrl);
+                        setAutoCloseSeconds(result.data.autoCloseSeconds || 15);
+                        setIsVisible(true);
+                        sessionStorage.setItem("hasSeenPopup", "true");
+                    }
+                    // No fallback — if no active banner, don't show popup
+                } catch (error) {
+                    console.warn("Failed to fetch popup banner:", error.message);
+                }
+            };
+
+            fetchPopupData();
+        }
+    }, []);
+
+    // Auto-close timer
+    useEffect(() => {
+        if (isVisible) {
             const timer = setTimeout(() => {
                 setIsVisible(false);
-            }, 15000);
+            }, autoCloseSeconds * 1000);
 
             return () => clearTimeout(timer);
         }
-    }, []);
+    }, [isVisible, autoCloseSeconds]);
 
     const handleClose = () => {
         setIsVisible(false);
@@ -31,7 +50,7 @@ const PopupModal = () => {
 
     return (
         <AnimatePresence>
-            {isVisible && (
+            {isVisible && imageUrl && (
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -54,14 +73,13 @@ const PopupModal = () => {
                             <X size={20} />
                         </button>
 
-                        {/* Image Container - simplified for vertical images */}
-                        <div className="relative flex justify-center items-center">
-                            {/* Use standard img tag to respect natural aspect ratio of unknown image dimensions */}
+                        {/* Image Container - 1:1 aspect ratio */}
+                        <div className="relative w-[80vw] max-w-[500px] aspect-square">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
-                                src="/images/PopupBanner.jpeg"
-                                alt="Anniversary Celebration"
-                                className="max-w-full max-h-[80vh] w-auto h-auto object-contain"
+                                src={imageUrl}
+                                alt="Popup Banner"
+                                className="w-full h-full object-cover"
                             />
                         </div>
                     </motion.div>

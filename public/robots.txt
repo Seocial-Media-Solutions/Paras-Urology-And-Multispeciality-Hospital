@@ -1,0 +1,22 @@
+# Robots.txt for Paras Urology & Multispeciality Hospital
+# Block crawlers from sensitive areas
+
+User-agent: *
+Allow: /
+
+# Block admin panel from indexing
+Disallow: /admin/
+Disallow: /admin/*
+Disallow: /api/
+
+# Block sensitive files
+Disallow: /.env
+Disallow: /.env.local
+Disallow: /.env.production
+Disallow: /.git/
+Disallow: /.git
+Disallow: /node_modules/
+Disallow: /.next/
+
+# Sitemap
+Sitemap: https://parashospitalajmer.com/sitemap.xml
